@@ -8,8 +8,11 @@ from core import redis
 from config.logger import setup_logging
 from config.settings import config
 
-from services.redis_service import RedisSubscriber, RedisPublisher
-from services.media_creator import MediaService
+from services import (
+    RedisPublisher,
+    RedisSubscriber,
+    MediaService
+)
 
 setup_logging()
 
@@ -108,9 +111,6 @@ class VideoMaker:
 
             log.debug(f"[ VIDEO MAKER ] Video generated: {video_url}")
 
-            # ==========================
-            # PUBLISH VIDEO READY EVENT
-            # ==========================
             video_payload = {
                 "type": "video_ready",
                 "source": "video_worker",
