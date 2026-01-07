@@ -1,5 +1,8 @@
-python-dotenv
-boto3
+moviepy==1.0.3
+Pillow>=10.0
+imageio
+imageio-ffmpeg
+numpy
 aiofiles
-moviepy
+boto3
 redis
