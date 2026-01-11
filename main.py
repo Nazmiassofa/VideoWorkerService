@@ -39,7 +39,7 @@ class VideoMaker:
         log.info("[ VIDEO MAKER ] Starting up...")
 
         self.redis = await redis.init_redis()
-        self.media = MediaService(min_images=10)
+        self.media = MediaService(min_images=10, duration_per_image=4.0)
         
         self.publisher = RedisPublisher(
             self.redis,
