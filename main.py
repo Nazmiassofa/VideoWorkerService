@@ -4,6 +4,7 @@ import logging
 import asyncio
 import signal
 
+from datetime import datetime
 from core import redis
 from config.logger import setup_logging
 from config.settings import config
@@ -23,6 +24,7 @@ class VideoMaker:
         
         self.shutdown_event = asyncio.Event()
         self.shutdown_lock = asyncio.Lock()
+        
         self.stopped = False
         self.redis = None
         self.upload = None
@@ -94,7 +96,6 @@ class VideoMaker:
                 return
             
             if self.media:
-
                 saved = await self.media.save_image(image_base64)
                 if saved:
                     log.debug(f"[ VIDEO MAKER ] Image saved successfully")
@@ -104,12 +105,18 @@ class VideoMaker:
                     return
 
                 log.info("[ VIDEO MAKER ] Generating slideshow video...")
-
+                
+                start = datetime.now()
+                
                 video_url = await self.media.generate_and_upload_video()
                 if not video_url:
+                    log.error("[ VIDEO MAKER ] Failed generate video")
                     return
-
-            log.debug(f"[ VIDEO MAKER ] Video generated: {video_url}")
+                
+                log.info(
+                    "[ VIDEO MAKER ] --- Successfully generate video in %.2f seconds",
+                    (datetime.now() - start).total_seconds()
+                )
 
             video_payload = {
                 "type": "video_ready",
