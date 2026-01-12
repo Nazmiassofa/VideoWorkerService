@@ -26,8 +26,8 @@ class MediaService:
         self,
         image_dir: str = "data/images",
         video_dir: str = "data/videos",
-        min_images: int = 5,
-        resolution: tuple = (1080, 1920),
+        min_images: int = 10,
+        resolution: tuple = (720, 1280),
         duration_per_image: float = 3.0,
         fps: int = 24,
     ):

@@ -25,7 +25,7 @@ class VideoGenerator:
     
     def __init__(
         self,
-        resolution: Tuple[int, int] = (1080, 1920),
+        resolution: Tuple[int, int] = (720, 1280),
         duration_per_image: float = 3.0,
         fps: int = 24,
         background_color: Tuple[int, int, int] = (255, 255, 255)  # White background
@@ -92,8 +92,8 @@ class VideoGenerator:
                 fps=self.fps,
                 codec="libx264",
                 audio_codec="aac",
-                threads=2,
-                preset="medium",
+                threads=1,
+                preset="ultrafast",
                 logger=None  # Suppress MoviePy's verbose output
             )
             
