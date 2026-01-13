@@ -52,10 +52,10 @@ class RedisSubscriber:
                 name=f"redis_subscriber:{self.channel}",
             )
 
-            log.info(f"[ SUBSCRIBER ] Subscribed to channel: {self.channel}")
+            log.info(f"[ REDIS-SUBS ] Subscribed to channel: {self.channel}")
 
         except Exception as e:
-            log.error("[ SUBSCRIBER ] Failed to start", exc_info=e)
+            log.error("[ REDIS-SUBS ] Failed to start", exc_info=e)
             raise
 
     async def stop(self):
@@ -65,17 +65,20 @@ class RedisSubscriber:
             try:
                 await self.task
             except asyncio.CancelledError:
-                log.info("[ SUBSCRIBER ] Task cancelled")
+                log.info("[ REDIS-SUBS ] Task cancelled")
 
         if self.pubsub:
             await self.pubsub.unsubscribe(self.channel)
             await self.pubsub.close()
-            log.info("[ SUBSCRIBER ] Unsubscribed and closed")
+            log.info("[ REDIS-SUBS ] Unsubscribed and closed")
 
     async def _loop(self):
-        log.info("[ SUBSCRIBER ] Listening for messages...")
-        assert self.pubsub is not None
-
+        log.info("[ REDIS-SUBS ] Listening for messages...")
+        
+        if self.pubsub is None:
+            log.error("[ REDIS-SUBS ] pubsub is None, cannot start listen loop")
+            return    
+                    
         try:
             async for message in self.pubsub.listen():
                 if self.shutdown_event.is_set():
@@ -90,7 +93,7 @@ class RedisSubscriber:
                 await self._handle_message(message)
 
         except asyncio.CancelledError:
-            log.info("[ SUBSCRIBER ] Loop cancelled")
+            log.info("[ REDIS-SUBS ] Loop cancelled")
             raise
 
     async def _handle_message(self, message: RedisMessage):
@@ -104,9 +107,9 @@ class RedisSubscriber:
             await self.message_handler(payload)
 
         except json.JSONDecodeError:
-            log.error("[ SUBSCRIBER ] Invalid JSON payload")
+            log.error("[ REDIS-SUBS ] Invalid JSON payload")
         except Exception as e:
-            log.error("[ SUBSCRIBER ] Message handler error", exc_info=e)
+            log.error("[ REDIS-SUBS ] Message handler error", exc_info=e)
             
 class RedisPublisher:
     def __init__(
