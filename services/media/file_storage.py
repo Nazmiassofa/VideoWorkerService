@@ -37,7 +37,7 @@ class FileStorage:
         async with aiofiles.open(file_path, "wb") as f:
             await f.write(image_bytes)
         
-        log.info(f"[ STORAGE ] Image saved: {file_path}")
+        log.debug(f"[ STORAGE ] Image saved: {file_path}")
         return file_path
     
     def get_images(self) -> List[str]:
