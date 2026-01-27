@@ -42,9 +42,11 @@ class MediaService:
             fps=fps
         )
         self.uploader = R2UploaderService(
-            config.R2_ACCOUNT_ID,
-            config.R2_ACCESS_KEY,
-            config.R2_SECRET_KEY
+            account_id=config.R2_ACCOUNT_ID,
+            access_key=config.R2_ACCESS_KEY,
+            secret_key=config.R2_SECRET_KEY,
+            public_base_url=config.R2_BASE_URL
+            
         )
         
         # Thread management

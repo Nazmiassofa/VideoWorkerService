@@ -28,7 +28,7 @@ class Settings:
     R2_ACCOUNT_ID : str = os.getenv("R2_ACCOUNT_ID", "")
     R2_ACCESS_KEY : str = os.getenv("R2_ACCESS_KEY", "")
     R2_SECRET_KEY : str = os.getenv("R2_SECRET_KEY", "")
-    R2_BASE_URL : str = os.getenv("R2_BASE_URL", "")
+    R2_BASE_URL : str = os.getenv("R2_BASE_URL", "https://media.voisaretired.online")
     R2_BUCKET : str = os.getenv("R2_BUCKET", "")
     
     
